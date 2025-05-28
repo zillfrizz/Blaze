@@ -6,7 +6,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include "utils/settings.hpp"
+#include <utils/settings.hpp>
 
 Instance Instance::s_instance;
 

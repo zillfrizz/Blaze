@@ -11,7 +11,7 @@
 #include "instance.hpp"
 #include "window.hpp"
 
-#include "utils/settings.hpp"
+#include <utils/settings.hpp>
 
 
 void BlazeEngine::run(){
