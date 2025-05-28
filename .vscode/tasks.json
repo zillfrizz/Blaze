@@ -6,6 +6,7 @@
       "type": "shell",
       "command": "g++.exe",
       "args": [
+        "-DNDEBUG",
         "-std=c++17",
         "-I",
         "C:/VulkanSDK/1.3.283.0/Include",
@@ -18,6 +19,7 @@
         "-L",
         "C:/VulkanSDK/1.3.283.0/lib",
         "${workspaceFolder}/vulkan/src/*.cpp",
+        "${workspaceFolder}/vulkan/src/utils/*.cpp",
         "-o",
         "${workspaceFolder}/vulkan/bin/x64/release/app.exe",
         "-lglfw3",
@@ -39,7 +41,6 @@
       "type": "shell",
       "command": "g++.exe",
       "args": [
-        "-DDebug",
         "-g",
         "-std=c++17",
         "-I",
@@ -53,6 +54,7 @@
         "-L",
         "C:/VulkanSDK/1.3.283.0/lib",
         "${workspaceFolder}/vulkan/src/*.cpp",
+        "${workspaceFolder}/vulkan/src/utils/*.cpp",
         "-o",
         "${workspaceFolder}/vulkan/bin/x64/debug/app.exe",
         "-lglfw3",
@@ -72,12 +74,14 @@
     {
       "label": "Run Vulkan Release",
       "type": "shell",
-      "command": "${workspaceFolder}/vulkan/bin/x64/release/app.exe"
+      "command": "${workspaceFolder}/vulkan/bin/x64/release/app.exe",
+      "problemMatcher": []
     },
     {
       "label": "Run Vulkan Debug",
       "type": "shell",
       "command": "${workspaceFolder}/vulkan/bin/x64/debug/app.exe",
+      "problemMatcher": []
     }
   ]
 }
