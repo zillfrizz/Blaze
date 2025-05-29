@@ -38,7 +38,7 @@ namespace utils {
         std::ofstream create(".settings/settings.txt", std::ios::app);
         create.close();
 
-        std::ifstream reader(".settings/settings.txt", std::ios::in | std::ios::ate);
+        std::ifstream reader(".settings/settings.txt", std::ios::in);
         int i = 0;
         std::string line;
         while(std::getline(reader, line) && i < SettingsNbr){          

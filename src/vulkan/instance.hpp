@@ -19,7 +19,7 @@ class Instance{
       VkDebugUtilsMessengerEXT m_callback;
 
       static void setupDebugMessenger();
-
+      
       Instance();
       Instance(Instance&) = delete;
       Instance& operator = (const Instance&) = delete;

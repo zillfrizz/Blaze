@@ -4,8 +4,8 @@
             "name": "Vulkan x64",
             "includePath": [
                 "C:/VulkanSDK/1.3.283.0/Include",
-                "${workspaceFolder}/lib/GLFW/include",
-                "${workspaceFolder}/lib/GLM",
+                "${workspaceFolder}/includes/GLFW/include",
+                "${workspaceFolder}/includes/GLM",
                 "${workspaceFolder}/src"
             ],
             "defines": [
