@@ -1,5 +1,5 @@
 #ifdef GRAPHIC_LIB_VULKAN
-#include "vulkan/app.hpp"
+#include "vulkan/BlazeVk.hpp"
 #endif
 
 #include <iostream>
@@ -10,7 +10,7 @@
 int main(){
 
     #ifdef GRAPHIC_LIB_VULKAN
-    BlazeEngine engine;
+    BlazeVk engine;
     #else
     return EXIT_FAILURE;
     #endif

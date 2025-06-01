@@ -2,7 +2,7 @@
 #include <fstream>
 #include <limits>
 
-#include "settings.hpp"
+#include "Settings.hpp"
 
 namespace utils {
 

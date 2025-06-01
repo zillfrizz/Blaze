@@ -8,7 +8,7 @@
 class Window;
 class Instance;
 
-class BlazeEngine {
+class BlazeVk {
   public:
 
     void run();

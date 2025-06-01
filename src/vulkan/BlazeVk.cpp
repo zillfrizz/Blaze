@@ -7,32 +7,32 @@
 #include <vector>
 #include <cstring>
 
-#include "app.hpp"
-#include "instance.hpp"
-#include "window.hpp"
+#include "BlazeVk.hpp"
+#include "VkImpl.hpp"
+#include "Window.hpp"
 
-#include <utils/settings.hpp>
+#include <utils/Settings.hpp>
 
 
-void BlazeEngine::run(){
+void BlazeVk::run(){
     init();
     mainLoop();
     cleanup();
 };
 
-void BlazeEngine::mainLoop(){
+void BlazeVk::mainLoop(){
     while(!glfwWindowShouldClose(Window::get().getGLFWwindow())){
         glfwPollEvents();
     }
 };
 
-void BlazeEngine::init(){
+void BlazeVk::init(){
     utils::loadSettings();
     Window::init();
-    Instance::init();
+    VkImpl::init();
 };
 
-void BlazeEngine::cleanup(){
-    Instance::cleanup();
+void BlazeVk::cleanup(){
+    VkImpl::cleanup();
     Window::cleanup();
 };
