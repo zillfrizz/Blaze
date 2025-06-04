@@ -1,5 +1,5 @@
 #ifdef GRAPHIC_LIB_VULKAN
-#include "vulkan/BlazeVk.hpp"
+#include "vulkan/core/BlazeVk.hpp"
 #endif
 
 #include <iostream>

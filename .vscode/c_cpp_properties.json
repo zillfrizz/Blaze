@@ -6,7 +6,7 @@
                 "C:/VulkanSDK/1.3.283.0/Include",
                 "${workspaceFolder}/includes/GLFW/include",
                 "${workspaceFolder}/includes/GLM",
-                "${workspaceFolder}/src"
+                "${workspaceFolder}/src/vulkan"
             ],
             "defines": [
                 "_DEBUG",

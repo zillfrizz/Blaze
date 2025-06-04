@@ -6,14 +6,14 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
-#include <utils/settings.hpp>
+#include <utils/u_globals.hpp>
 
 Window Window::s_window;
 
 void Window::loadSettings(){
-    m_width = std::stoi(utils::settingsValues[utils::WindowWidth]);
-    m_height = std::stoi(utils::settingsValues[utils::WindowHeight]);
-    m_title = ("Blaze (v" + utils::settingsValues[utils::Version] + ")").c_str();
+    m_width = std::stoi(globals::settings[globals::WindowWidth]);
+    m_height = std::stoi(globals::settings[globals::WindowHeight]);
+    m_title = ("Blaze (v" + globals::settings[globals::Version] + ")").c_str();
 }
 
 GLFWwindow* Window::getGLFWwindow(){

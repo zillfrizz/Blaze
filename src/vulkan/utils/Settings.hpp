@@ -1,18 +1,7 @@
 #pragma once
-
-#include <string>
+#include "u_globals.hpp"
 
 namespace utils {
-    
-    enum Setting {
-        Version,
-        EngineVersion,
-        WindowWidth,
-        WindowHeight,
-        SettingsNbr
-    };
-
-    extern std::string settingsValues[SettingsNbr];
 
     bool isOnLength(std::string str, int p_length);
 

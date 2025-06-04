@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vulkan/vulkan.h"
+#include <vulkan/vulkan.h>
 #include <vector>
 class Device;
 
@@ -19,6 +19,8 @@ class VkImpl{
       static VkImpl s_instance;
       VkInstance m_handle = nullptr;
       uint32_t m_version;
+
+      Device* m_device;
 
       static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
       VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData);
