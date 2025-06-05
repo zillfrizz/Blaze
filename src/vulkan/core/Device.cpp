@@ -6,6 +6,14 @@
 
 #include <utils/u_device.hpp>
 
+VkDevice& Device::get(){
+    return m_handle;
+}
+
+VkPhysicalDevice& Device::getPhysical(){
+    return m_physicalHandle;
+}
+
 void Device::cleanup(){
     vkDestroyDevice(m_handle, nullptr);
 }
@@ -17,31 +25,31 @@ Device::Device(VkInstance& instance){
     std::vector<VkPhysicalDevice> devices(devicesCount);
     vkEnumeratePhysicalDevices(instance, &devicesCount, devices.data());
 
-    std::vector<const char*> extensions{  // REQUIRED EXTENSIONS
-        "VK_KHR_swapchain",
-        "VK_KHR_dynamic_rendering",
-        "VK_KHR_synchronization2",
-        "VK_KHR_timeline_semaphore"
-    };
-    // REQUIRED FEATURES
-    VkPhysicalDeviceVulkan13Features requiredFT13{  // REQUIRED 1.3 FEATURES
-        requiredFT13.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES,
-    };
-    VkPhysicalDeviceVulkan12Features requiredFT12{  // REQUIRED 1.2 FEATURES
-        requiredFT12.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES,
-        requiredFT12.pNext = &requiredFT13,
-        .timelineSemaphore = VK_TRUE
-    };
-    VkPhysicalDeviceVulkan11Features requiredFT11{  // REQUIRED 1.1 FEATURES
-        requiredFT11.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_1_FEATURES,
-        requiredFT11.pNext = &requiredFT12,
-    };
-    VkPhysicalDeviceFeatures2 requiredFT{   // REQUIRED 1.0 FEATURES
-        requiredFT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2,
-        requiredFT.pNext = &requiredFT11,
-    };
-
     for(auto& device : devices){
+        std::vector<const char*> requiredExtensions{  // REQUIRED EXTENSIONS
+            "VK_KHR_swapchain",
+            "VK_KHR_dynamic_rendering",
+            "VK_KHR_synchronization2",
+            "VK_KHR_timeline_semaphore",
+        };
+    // REQUIRED FEATURES
+        VkPhysicalDeviceVulkan13Features requiredFT13{  // REQUIRED 1.3 FEATURES
+            requiredFT13.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES,
+        };
+        VkPhysicalDeviceVulkan12Features requiredFT12{  // REQUIRED 1.2 FEATURES
+            requiredFT12.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES,
+            requiredFT12.pNext = &requiredFT13,
+            .timelineSemaphore = VK_TRUE
+        };
+        VkPhysicalDeviceVulkan11Features requiredFT11{  // REQUIRED 1.1 FEATURES
+            requiredFT11.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_1_FEATURES,
+            requiredFT11.pNext = &requiredFT12,
+        };
+        VkPhysicalDeviceFeatures2 requiredFT{   // REQUIRED 1.0 FEATURES
+            requiredFT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2,
+            requiredFT.pNext = &requiredFT11,
+        };
+
         bool pickable = true;
         vkGetPhysicalDeviceProperties(device, &m_props);
         if(m_props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU){
@@ -115,15 +123,15 @@ Device::Device(VkInstance& instance){
 
             // CHECKING DES EXTENSIONS
             
-            for(auto& extension : extensions){
+            for(auto& requiredExtension : requiredExtensions){
                 bool founded = false;
                 for(auto& extensionProps : EXT){
-                    if(strcmp(extension, extensionProps.extensionName) == 0){
+                    if(strcmp(requiredExtension, extensionProps.extensionName) == 0){
                         founded = true;
                         break;
                     }
                 }             
-                if(!founded){std::cout << "device extension " + std::string(extension) + "not supported.\n" ;pickable = false;}
+                if(!founded){std::cout << "device extension " + std::string(requiredExtension) + " not supported.\n" ;pickable = false;}
             }
 
             for(int i = m_extensions.size() - 1; i >= 0; i--){
@@ -131,7 +139,7 @@ Device::Device(VkInstance& instance){
                 for(auto& extensionProps : EXT){
                     if(strcmp(m_extensions[i], extensionProps.extensionName) == 0){
                         founded = true;
-                        extensions.push_back(m_extensions[i]);
+                        requiredExtensions.push_back(m_extensions[i]);
                         break;
                     }
                 }             
@@ -140,6 +148,7 @@ Device::Device(VkInstance& instance){
                 }
             }
             if(pickable){
+                m_physicalHandle = device;
                 float priority = 1.0f;
                 VkDeviceQueueCreateInfo queues[3];
                 for(size_t i = 0; i < 3; i++){
@@ -156,8 +165,8 @@ Device::Device(VkInstance& instance){
                 deviceInfo.flags = 0;   // FOR FUTURE VERSIONS OF VULKAN
                 deviceInfo.queueCreateInfoCount = 3;
                 deviceInfo.pQueueCreateInfos = queues;
-                deviceInfo.enabledExtensionCount = extensions.size();
-                deviceInfo.ppEnabledExtensionNames = extensions.data();
+                deviceInfo.enabledExtensionCount = requiredExtensions.size();
+                deviceInfo.ppEnabledExtensionNames = requiredExtensions.data();
                 deviceInfo.pEnabledFeatures = nullptr;  // ON pNext
                 if(vkCreateDevice(device, &deviceInfo, nullptr, &m_handle) != VK_SUCCESS){
                     throw std::runtime_error("init(): device chosen but failed");

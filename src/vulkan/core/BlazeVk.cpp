@@ -27,12 +27,12 @@ void BlazeVk::mainLoop(){
 };
 
 void BlazeVk::init(){
+    glfwInit();
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     utils::loadSettings();
-    Window::init();
     VkImpl::init();
 };
 
 void BlazeVk::cleanup(){
     VkImpl::cleanup();
-    Window::cleanup();
 };

@@ -22,12 +22,11 @@ namespace globals{
         #endif
     };
 
-    std::vector<const char*> instanceEXT{   // EXTENSIONS DISPONIBLES
+    std::vector<const char*> instanceEXT{   // EXTENSIONS D'INSTANCE OPTIONNELLES
         #ifndef NDEBUG
         VK_EXT_DEBUG_UTILS_EXTENSION_NAME,  // DEBUG CALLBACKS
         #endif
-        VK_KHR_SURFACE_EXTENSION_NAME,
-
+        "VK_KHR_get_surface_capabilities2"
     };
 
 }

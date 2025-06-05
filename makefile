@@ -32,8 +32,8 @@ CXXFLAGS += $(foreach dir,$(IFLAGS),-I$(dir))
 #FILES
 EXEPATH = bin/x64/
 EXE = $(EXEPATH)$(MODE)/$(GRAPHLIB)_app
-SRCS := src/main.cpp $(wildcard src/$(GRAPHLIB)/*/*.cpp)
-OBJS := $(SRCS:.cpp=.o)
+SRCS := src/main.cpp $(wildcard src/$(GRAPHLIB)/**/*.cpp)
+OBJS := $(patsubst src/%.cpp, build/%.o, $(SRCS))
 
 all : $(EXE)
 
@@ -43,7 +43,8 @@ run : $(EXE)
 $(EXE) : $(OBJS)
 	$(CXX) $(LFLAGS) -o $(EXE) $(OBJS) $(lFLAGS)
 
-%.o : %.cpp
+build/%.o: src/%.cpp
+	@mkdir -p $(dir $@)
 	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
 clean:

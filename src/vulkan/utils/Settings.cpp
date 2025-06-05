@@ -1,6 +1,7 @@
 #include <array>
 #include <fstream>
 #include <limits>
+#include <iostream>
 
 #include "Settings.hpp"
 
@@ -37,12 +38,14 @@ namespace utils {
         while(std::getline(reader, line) && i < globals::SettingsNbr){          
                 for(int j = 0; j < line.length() ; j++){
                     if(line[j] == ' '){
-                        if(line.substr(0, j) == settingsTemp[i]){             
-                            if (!verifFuncs[settingsStruct[i].first](line.substr(j), settingsStruct[i].second)){ // Si la valeur est incorrecte
+                        if(line.substr(0, j) == settingsTemp[i]){          
+                            std::string value = line.substr(j+1);
+                            if (!verifFuncs[settingsStruct[i].first](value, settingsStruct[i].second)){ // Si la valeur est incorrecte
                                 settingsTemp[i] = settingsTemp[i] + " " + globals::settings[i];
                             }
-                            else{ settingsTemp[i] = line;}
+                            else{ settingsTemp[i] = line; globals::settings[i] = value;}
                             i++; 
+                            break;
                         }
                     }
                 }

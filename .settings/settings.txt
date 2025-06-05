@@ -1,4 +1,4 @@
 version 0.0.0
 engineVersion 0.0.0
-windowWidth 1000
+windowWidth 800
 windowHeight 600

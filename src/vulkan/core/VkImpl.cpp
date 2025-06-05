@@ -8,6 +8,7 @@
 #include <utils/u_globals.hpp>
 
 #include "Device.hpp"
+#include "Window.hpp"
 
 #define LOAD_INSTANCE_FN(instance, name) \
     name = (PFN_##name) vkGetInstanceProcAddr(instance, #name); \
@@ -64,7 +65,6 @@ void VkImpl::init(){
     instanceInfo.pApplicationInfo = &appInfo;
 
     std::vector<const char*> extensions{ // EXTENSIONS D'INSTANCE REQUISES
-        VK_KHR_SURFACE_EXTENSION_NAME
     };
 
     uint32_t glfwExtensionsCount;
@@ -114,6 +114,7 @@ void VkImpl::init(){
         for(auto& EXT : availableEXT){
             if(strcmp(globals::instanceEXT[i], EXT.extensionName) == 0){
                 extensionFound = true;
+                extensions.push_back(globals::instanceEXT[i]);
             }
         }
         if(!extensionFound){std::cout << "Extension: " << globals::instanceEXT[i] << " not supported.\n";
@@ -135,8 +136,8 @@ void VkImpl::init(){
 
     instanceInfo.enabledLayerCount = globals::layers.size();
     instanceInfo.ppEnabledLayerNames = globals::layers.data();
-    instanceInfo.enabledExtensionCount = globals::instanceEXT.size();
-    instanceInfo.ppEnabledExtensionNames = globals::instanceEXT.data();
+    instanceInfo.enabledExtensionCount = extensions.size();
+    instanceInfo.ppEnabledExtensionNames = extensions.data();
 
     #ifndef NDEBUG
     VkDebugUtilsMessengerCreateInfoEXT messenger;
@@ -145,9 +146,11 @@ void VkImpl::init(){
     #endif
     if(vkCreateInstance(&instanceInfo, nullptr, &s_instance.m_handle) != VK_SUCCESS){throw std::runtime_error("can't create instance !\n");};
     s_instance.m_device = new Device(s_instance.m_handle);  
+    Window::init(s_instance.m_handle, s_instance.m_device->get(), s_instance.m_device->getPhysical());
 }
 
 void VkImpl::cleanup(){
+    Window::cleanup(s_instance.m_handle,s_instance.m_device->get());
     s_instance.m_device->cleanup();
     vkDestroyInstance(s_instance.m_handle, nullptr);
 }

@@ -3,6 +3,7 @@
 #include <vulkan/vulkan.h>
 #include <vector>
 class Device;
+class Window;
 
 class VkImpl{
     public:
@@ -19,6 +20,7 @@ class VkImpl{
       static VkImpl s_instance;
       VkInstance m_handle = nullptr;
       uint32_t m_version;
+      Window* window;
 
       Device* m_device;
 

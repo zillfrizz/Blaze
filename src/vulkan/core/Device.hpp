@@ -7,9 +7,13 @@ class Device{
     Device(VkInstance& instance);
     void cleanup();
 
+    VkDevice& get();
+    VkPhysicalDevice& getPhysical();
+
   private:
 
     VkDevice m_handle;
+    VkPhysicalDevice m_physicalHandle;
 
     VkPhysicalDeviceProperties m_props;
 
@@ -34,7 +38,8 @@ class Device{
     };
   
   // DROP OPTIONAL EXTENSIONS HERE
-    std::vector<const char*> m_extensions {  
+    std::vector<const char*> m_extensions { 
+      "VK_EXT_full_screen_exclusive" 
     };
 
     VkQueue m_queues[3]{}; // 0=GRAPHICS 1=TRANSFER 2=COMPUTE
