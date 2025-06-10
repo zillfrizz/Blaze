@@ -1,6 +1,11 @@
 #CMD
 CXX = g++
 
+#SHADERS
+SHADEREXE = $(wildcard C:/VulkanSDK/*/bin/glslc.exe)
+SHADERSRCS := $(wildcard src/$(GRAPHLIB)/shaders/*.vert) $(wildcard src/$(GRAPHLIB)/shaders/*.frag)
+SPVS := $(patsubst src/%, build/%.spv, $(SHADERSRCS))
+
 #OPTIONS
 GRAPHLIB ?= vulkan
 MODE ?= debug
@@ -11,7 +16,7 @@ LFLAGS := $(foreach dir,$(LIBDIRS),-L$(dir))
 lFLAGS = -lglfw3 -lvulkan-1 -lgdi32 -luser32 -lkernel32
 
 #INCLUDES
-IFLAGS = C:/VulkanSDK/1.3.283.0/Include includes/GLFW/include includes/GLM src/$(GRAPHLIB)
+IFLAGS = $(wildcard C:/VulkanSDK/*/Include) includes/GLFW/include includes/GLM src/$(GRAPHLIB)
 
 #FLAGS
 VULKANFLAGS = -DGRAPHIC_LIB_VULKAN
@@ -34,6 +39,14 @@ EXEPATH = bin/x64/
 EXE = $(EXEPATH)$(MODE)/$(GRAPHLIB)_app
 SRCS := src/main.cpp $(wildcard src/$(GRAPHLIB)/**/*.cpp)
 OBJS := $(patsubst src/%.cpp, build/%.o, $(SRCS))
+
+vkshader : $(SPVS)
+
+src/vulkan/shaders/%.frag.spv : src/vulkan/shaders/%.frag
+	$(SHADEREXE) $< -o $@
+
+src/vulkan/shaders/%.vert.spv : src/vulkan/shaders/%.vert
+	$(SHADEREXE) $< -o $@
 
 all : $(EXE)
 

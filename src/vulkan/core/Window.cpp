@@ -51,6 +51,23 @@ void Window::createSwapchain(VkInstance& instance, VkDevice& device, VkPhysicalD
     vkGetSwapchainImagesKHR(device, m_swapchain, &m_imageCount, nullptr);
     vkGetSwapchainImagesKHR(device, m_swapchain, &m_imageCount, m_images);
 
+    m_imageViews = new VkImageView[m_imageCount];
+    
+    for(int i = 0; i < m_imageCount; i++){
+        VkImageViewCreateInfo viewInfo{};
+        viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+        viewInfo.image = m_images[i];
+        viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+        viewInfo.format = VK_FORMAT_R8G8B8A8_SRGB;
+        viewInfo.flags = 0;
+        viewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        viewInfo.subresourceRange.baseMipLevel = 0;
+        viewInfo.subresourceRange.levelCount = 1;
+        viewInfo.subresourceRange.baseArrayLayer = 0;
+        viewInfo.subresourceRange.layerCount = 1;
+        vkCreateImageView(device, &viewInfo, nullptr, &m_imageViews[i]);
+    }
+
 // TODO: Attendre que GPU ait fini d'utiliser oldSwapchain ici
 
     if(oldSwapchain != VK_NULL_HANDLE){
